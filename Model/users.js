@@ -2,14 +2,22 @@ const bcrypt =  require('bcrypt');
 const mongoose =  require('mongoose');
 
 let UserSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : false,        
+    },
     email : {
         type : String,
-        required : true,
+        required : false,
         trim : true
+    },
+    mobile : {
+        type : String,
+        required : false,        
     },
     password : {
         type : String,
-        required : true,        
+        required : false,        
     }
 });
 
@@ -31,8 +39,30 @@ UserSchema.statics.authentication = (email, password, callback) =>{
             }
         })
     })  
+}
+UserSchema.statics.registration = (userdata,callback)=> {
 
-    
+    console.log("--User Data->",userdata);
+    var ContactModel = mongoose.model('users',UserSchema);
+
+        var contactModel = new ContactModel({
+        name:userdata.name,
+        email:userdata.email,
+        password:userdata.password,
+        });
+        contactModel.save();
+    /*var ContactModel = mongoose.model('users',contactdetails1);
+    var contactModel = new ContactModel({
+    name:req.body.name,
+    email:req.body.email,
+    password:'',
+    mobile:req.body.number 
+    })*/
+}
+
+
+UserSchema.statics.userupdate = (userdata,callback) =>{    
+
 }
 
 var User = mongoose.model('User', UserSchema);

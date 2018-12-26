@@ -3,8 +3,8 @@ var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
+var expressSession = require('express-session');
+var MongoStore = require('connect-mongo')(expressSession);
 
 
 app.use(bodyParser.json());
@@ -13,10 +13,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // serve static files from template
 //app.use(express.static(__dirname + '/templateLogReg'));
 app.use(express.static(path.join(__dirname, 'template')));
-// include routes
-var routes = require('./routes/router');
-app.use('/', routes);
 
+app.set('views', path.join(__dirname, 'template'));
+app.set('view engine', 'pug');
 
 
 //connect to MongoDB
@@ -30,9 +29,14 @@ db.once('open', function () {
 });
 
 
-app.use(session({secret: 'your secret', saveUninitialized: true, resave: false}));
+app.use(expressSession({secret: 'Nigam', saveUninitialized: true, resave: false}));
 
+var routes = require('./routes/router');
+app.use('/', routes);
 // listen on port 3000
 app.listen(3000, function () {
     console.log('Express app listening on port 3000');
   });
+
+
+ 

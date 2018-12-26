@@ -1,0 +1,30 @@
+doctype html
+html(lang='en')
+  head
+    title Registration
+  body
+    h1 User Registration
+    #container.col
+      form(action='/register', method='post')
+        p You are amazing
+        p Name :  
+        input#user_name(type='text', name='user_name')
+        p
+        p Address :  
+        textarea#address(name='address')
+        p
+        p Email :  
+        input#Mobile(type='text', name='email')
+        p
+        p Mobile :  
+        input#Mobile(type='text', name='Mobile')
+        p
+        p Password :  
+        input#password(type='text', name='password')
+        p
+        p Confirm Password :  
+        input#confpassword(type='text', name='confpassword')
+        p
+        p
+        input#submit(type='submit', name='submit')
+        p

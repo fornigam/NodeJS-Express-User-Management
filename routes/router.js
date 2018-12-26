@@ -1,5 +1,4 @@
 var express = require('express');
-var session = require('express-session')
 var router = express.Router();
 var User = require('../Model/users');
 
@@ -21,7 +20,8 @@ router.post('/',(req,res)=>{
           var err = new Error('Wrong email');
           return next(err);
         } else {
-          //console.log('Data-4>',req.body);
+          console.log("Sesseion value->", req.session);
+          //console.log("Request value->", req);
           req.session.userId = result.id;
           return res.redirect('/profile');
         }
@@ -30,9 +30,30 @@ router.post('/',(req,res)=>{
 
 })
 
+router.post('/register',(req,res)=>{
+  console.log('Data-0>',req.body);
+  if(req.body.email && req.body.password){
+    User.registration(req.body,function(err,result){
+
+    });
+  }
+
+});
+
+
 router.get('/profile', function (req, res, next) {
-  console.log('Profile page calle');
-  process.exit(1);  
+  console.log('Profile page called');
+  res.render('profile', {
+    title: 'Home',    
+  });
+  
+})
+router.get('/register', function (req, res, next) {
+  console.log('Register page called');
+  res.render('register', {
+    title: 'Home',    
+  });
+  
 })
 
 module.exports = router;
