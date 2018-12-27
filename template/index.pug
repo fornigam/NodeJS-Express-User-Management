@@ -1,0 +1,8 @@
+include ./partials/header.pug
+.login-page
+  .form
+    form.login-form(action='/', method='post')
+      input(type='text', name='logemail', placeholder='E-mail', required='')
+      input(type='password', name='logpassword', placeholder='Password', required='')
+      .tp
+        input(type='submit', value='LOGIN NOW')

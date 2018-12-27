@@ -5,7 +5,10 @@ var User = require('../Model/users');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
-  return res.sendFile(path.join(__dirname + '/template/index.html'));
+  //return res.sendFile(path.join(__dirname + '/template/index.pug'));
+  res.render('index', {
+    title: 'User Registration',    
+  });  
 });
 
 router.post('/',(req,res)=>{  
@@ -35,7 +38,6 @@ router.post('/register',(req,res)=>{
 router.post('/profile',(req,res)=>{  
   if(req){
     User.userprofileupdate(req.body,function(err,result){
-
     });
   }
 
@@ -43,18 +45,25 @@ router.post('/profile',(req,res)=>{
 
 
 router.get('/profile', function (req, res, next) {  
-  User.userprofiledata(req.session.userId,function(err,user){
-    userdata = user;    
-    res.render('profile', {
-      welcome_txt: 'Welcome ',    
-      session_val: req.session.userId,      
-      username : userdata.username,
-      name : userdata.name,
-      email : userdata.email,
-      mobile : userdata.mobile,
-      address : userdata.address,
-    });
-  })
+  if(req.session.userId){
+    User.userprofiledata(req.session.userId,function(err,user){
+      userdata = user;    
+      res.render('profile', {
+        welcome_txt: 'Welcome ',    
+        session_val: req.session.userId,      
+        username : userdata.username,
+        name : userdata.name,
+        email : userdata.email,
+        mobile : userdata.mobile,
+        address : userdata.address,
+      });
+    })
+    
+  }  else {
+    res.redirect('/');
+  }
+  
+  
 })
 
 router.get('/register', function (req, res, next) {    
