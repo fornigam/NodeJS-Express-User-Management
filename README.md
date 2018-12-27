@@ -8,7 +8,11 @@
 
 Login Page
 ---------------
-![image](https://user-images.githubusercontent.com/9930400/50480244-ce5d2780-0a00-11e9-9414-45853f4f1cae.png)
+![image](https://user-images.githubusercontent.com/9930400/50481390-3b73bb80-0a07-11e9-9ac1-2e17027fd4f3.png)
+
+Registration Page
+---------------
+![image](https://user-images.githubusercontent.com/9930400/50481367-18490c00-0a07-11e9-8733-176d19de35cc.png)
 
 Profile Page
 ---------------
