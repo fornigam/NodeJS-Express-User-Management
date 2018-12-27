@@ -8,21 +8,14 @@ router.get('/', function (req, res, next) {
   return res.sendFile(path.join(__dirname + '/template/index.html'));
 });
 
-router.post('/',(req,res)=>{
-  //console.log('Data-0>',req.body);
-  //console.log('Data-0>',(req.body.logemail && req.body.logpassword));
-  if(req.body.logemail && req.body.logpassword){
-    //console.log('Data-1>',User);
-    User.authentication(req.body.logemail,req.body.logpassword,function(err,result){
-      console.log('Data-2>',result.id);
-        if(err || !result){
-          //console.log('Data-3>',req.body);
+router.post('/',(req,res)=>{  
+  if(req.body.logemail && req.body.logpassword){    
+    User.authentication(req.body.logemail,req.body.logpassword,function(err,result){      
+        if(err || !result){          
           var err = new Error('Wrong email');
           return next(err);
-        } else {
-          console.log("Sesseion value->", req.session);
-          //console.log("Request value->", req);
-          req.session.userId = result.id;
+        } else {          
+          req.session.userId = result.id;          
           return res.redirect('/profile');
         }
     })
@@ -30,8 +23,7 @@ router.post('/',(req,res)=>{
 
 })
 
-router.post('/register',(req,res)=>{
-  console.log('Data-0>',req.body);
+router.post('/register',(req,res)=>{  
   if(req.body.email && req.body.password){
     User.registration(req.body,function(err,result){
 
@@ -40,20 +32,35 @@ router.post('/register',(req,res)=>{
 
 });
 
+router.post('/profile',(req,res)=>{  
+  if(req){
+    User.userprofileupdate(req.body,function(err,result){
 
-router.get('/profile', function (req, res, next) {
-  console.log('Profile page called');
-  res.render('profile', {
-    title: 'Home',    
-  });
-  
+    });
+  }
+
+});
+
+
+router.get('/profile', function (req, res, next) {  
+  User.userprofiledata(req.session.userId,function(err,user){
+    userdata = user;    
+    res.render('profile', {
+      welcome_txt: 'Welcome ',    
+      session_val: req.session.userId,      
+      username : userdata.username,
+      name : userdata.name,
+      email : userdata.email,
+      mobile : userdata.mobile,
+      address : userdata.address,
+    });
+  })
 })
-router.get('/register', function (req, res, next) {
-  console.log('Register page called');
+
+router.get('/register', function (req, res, next) {    
   res.render('register', {
-    title: 'Home',    
-  });
-  
+    title: 'User Registration',    
+  });  
 })
 
 module.exports = router;

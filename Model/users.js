@@ -6,6 +6,10 @@ let UserSchema = new mongoose.Schema({
         type : String,
         required : false,        
     },
+    username : {
+        type : String,
+        required : false,        
+    },
     email : {
         type : String,
         required : false,
@@ -18,12 +22,16 @@ let UserSchema = new mongoose.Schema({
     password : {
         type : String,
         required : false,        
+    },
+    address : {
+        type : String,
+        required : false,        
     }
 });
 
 
 UserSchema.statics.authentication = (email, password, callback) =>{    
-    User.findOne({email : email }).exec(function(err,user){
+    User.findOne({email : email, password : password }).exec(function(err,user){
         if(err){
             return callback(err);
         } else if(!user) {
@@ -41,28 +49,53 @@ UserSchema.statics.authentication = (email, password, callback) =>{
     })  
 }
 UserSchema.statics.registration = (userdata,callback)=> {
-
-    console.log("--User Data->",userdata);
+    req.session.destroy(function(err) {
+        if(err) {
+          console.log(err);
+        } else {
+          res.redirect('/');
+        }
+    });    
     var ContactModel = mongoose.model('users',UserSchema);
-
-        var contactModel = new ContactModel({
+    var contactModel = new ContactModel({
         name:userdata.name,
         email:userdata.email,
         password:userdata.password,
-        });
-        contactModel.save();
-    /*var ContactModel = mongoose.model('users',contactdetails1);
-    var contactModel = new ContactModel({
-    name:req.body.name,
-    email:req.body.email,
-    password:'',
-    mobile:req.body.number 
-    })*/
+    });
+    contactModel.save();    
 }
 
 
-UserSchema.statics.userupdate = (userdata,callback) =>{    
+UserSchema.statics.userprofiledata = (userId,callback) =>{    
+    
+    return User.findOne({_id : userId }).exec(function(err,user){
+        if(err){
+            return callback(err);
+        } else if(!user) {
+            var err = new Error('User is not exist');
+            err.status = 401;
+           // return callback(err);
+        } else if(user) {
+            //console.log('userprofiledata_userId->',user);
+            return callback(null,user);
+        }
+      }) 
+}
 
+UserSchema.statics.userprofileupdate = (userdata,callback) =>{        
+    console.log('User Update Data->',userdata);
+    return User.updateOne({_id: userdata.uid},
+    {
+        name: userdata.user_name,
+        address: userdata.address,
+        email: userdata.email,
+        Mobile: userdata.mobile,
+        password: userdata.password,        
+        
+    }, function(err, docs){
+        if(err) return json(err);
+        //else    res.redirect('/user/'+req.params.id);
+    });
 }
 
 var User = mongoose.model('User', UserSchema);
