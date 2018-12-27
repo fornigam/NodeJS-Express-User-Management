@@ -10,7 +10,7 @@ Login Page
 ---------------
 ![image](https://user-images.githubusercontent.com/9930400/50480244-ce5d2780-0a00-11e9-9414-45853f4f1cae.png)
 
-Profile Apge
+Profile Page
 ---------------
 ![image](https://user-images.githubusercontent.com/9930400/50481293-b4264800-0a06-11e9-82c9-078bc1ce2929.png)
 
