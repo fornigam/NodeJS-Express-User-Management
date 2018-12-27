@@ -16,7 +16,7 @@ Registration Page
 
 Profile Page
 ---------------
-![image](https://user-images.githubusercontent.com/9930400/50481293-b4264800-0a06-11e9-82c9-078bc1ce2929.png)
+![image](https://user-images.githubusercontent.com/9930400/50481428-6d851d80-0a07-11e9-87d6-dcc27466ba46.png)
 
 Directory
 --------------------
