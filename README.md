@@ -1,7 +1,7 @@
 
 ---------------------
 @ node-login-system
-@ Author : Nigam Mehta<fornigam@gmail.com>
+@ Author : Nigam Mehta - <fornigam@gmail.com>
 @ Technology : NodeJS(Express), MongoDB with mongoose, Pug/JADE template Engine
 @ Desciption : This is system is developed for login,registration profile management
 
