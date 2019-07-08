@@ -1,6 +1,8 @@
 const bcrypt =  require('bcrypt');
 const mongoose =  require('mongoose');
 
+var BCRYPT_SALT_ROUNDS = 12;
+
 let UserSchema = new mongoose.Schema({
     name : {
         type : String,
@@ -30,39 +32,46 @@ let UserSchema = new mongoose.Schema({
 });
 
 
-UserSchema.statics.authentication = (email, password, callback) =>{    
-    User.findOne({email : email, password : password }).exec(function(err,user){
-        if(err){
-            return callback(err);
-        } else if(!user) {
-            var err = new Error('User is not exist');
-            err.status = 401;
-           // return callback(err);
-        }
-        bcrypt.compare(password,user.password, function(err,result){
-            if(err){
-                return callback();
+UserSchema.statics.authentication = (email, password, callback) =>{
+    
+    User.findOne({email : email, password : password },function(err,user){     
+        console.log('calling+',user);            
+        //bcrypt.compare(password,password, function(err,result){
+            if(err || user == null){
+                return callback(err);
             } else {                
                 return callback(null,user);
             }
-        })
-    })  
+        //})
+    })
+       
+    
+    
 }
 UserSchema.statics.registration = (userdata,callback)=> {
-    req.session.destroy(function(err) {
-        if(err) {
-          console.log(err);
-        } else {
-          res.redirect('/');
-        }
-    });    
-    var ContactModel = mongoose.model('users',UserSchema);
+    return User.create( {
+            name: userdata.user_name,
+            address: userdata.address,
+            email: userdata.email,
+            mobile: userdata.mobile,
+            password:  bcrypt.hashSync(userdata.password, BCRYPT_SALT_ROUNDS),            
+            
+        }, function(err, result){
+            if(err){
+                return callback(err);
+            } else {                
+                return callback(null,result);
+            }
+        });
+    
+    
+    /*var ContactModel = mongoose.model('users',UserSchema);
     var contactModel = new ContactModel({
         name:userdata.name,
         email:userdata.email,
         password:userdata.password,
     });
-    contactModel.save();    
+    contactModel.save(); */
 }
 
 
@@ -82,8 +91,7 @@ UserSchema.statics.userprofiledata = (userId,callback) =>{
       }) 
 }
 
-UserSchema.statics.userprofileupdate = (userdata,callback) =>{        
-    console.log('User Update Data->',userdata);
+UserSchema.statics.userprofileupdate = (userdata,callback) =>{            
     return User.updateOne({_id: userdata.uid},
     {
         name: userdata.user_name,
