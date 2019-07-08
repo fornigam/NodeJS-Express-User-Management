@@ -12,12 +12,15 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/',(req,res)=>{  
-  if(req.body.logemail && req.body.logpassword){    
+  if(req.body.logemail && req.body.logpassword){ 
+    console.log('called err--');   
     User.authentication(req.body.logemail,req.body.logpassword,function(err,result){      
-        if(err || !result){          
+        if(err){
+          console.log('called err');
           var err = new Error('Wrong email');
-          return next(err);
-        } else {          
+          return false;
+        } else if(result) {         
+          console.log('called result'); 
           req.session.userId = result.id;          
           return res.redirect('/profile');
         }
@@ -29,7 +32,10 @@ router.post('/',(req,res)=>{
 router.post('/register',(req,res)=>{  
   if(req.body.email && req.body.password){
     User.registration(req.body,function(err,result){
-
+      if(err) throw err
+      if(result) {
+          console.log('Register Result->',result)
+      }
     });
   }
 
@@ -56,6 +62,7 @@ router.get('/profile', function (req, res, next) {
         email : userdata.email,
         mobile : userdata.mobile,
         address : userdata.address,
+        password : userdata.password,
       });
     })
     
