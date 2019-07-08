@@ -1,33 +1,15 @@
-doctype html
-html(lang='en')
-  head
-    title Profile
-  body
-    h1 #{welcome_txt} with #{name}
-    #container.col
-      p
-        a(href='/') Logout
-      form(action='/profile', method='post')
-        p You are amazing
-        p Name :  
-        input#user_name(type='text', name='user_name', value=name )
-        p
-        p Address :  
-        textarea#address(name='address') #{address}
-        p
-        p Email :  
-        input#Mobile(type='text', name='email', value=email)
-        p
-        p Mobile :  
-        input#Mobile(type='text', name='Mobile', value=mobile)
-        p
-        p Password :  
-        input#password(type='text', name='password', value=password)
-        p
-        p Confirm Password :  
-        input#confpassword(type='text', name='confpassword', value='')
-        p
-        p
-        input#submit(type='submit', name='submit')
-        input#uid(type='hidden', name='uid' value=session_val)
-        p
+include ./partials/header.pug
+.login-page
+  .form 
+    h3 User Profile       
+    h4 Welcome #{name}
+    form(action='/profile', method='post')        
+      input#user_name(type='text', name='user_name', value=name)        
+      textarea#address(name='address') #{address}        
+      input#Mobile(type='text', name='email', value=email)        
+      input#Mobile(type='text', name='Mobile', value=mobile)        
+      input#password(type='text', name='password', value=password)              
+      input#submit(type='submit', name='submit' value="Update")
+      input#uid(type='hidden', name='uid' value=session_val)
+      a(href='/') Logout
+      
